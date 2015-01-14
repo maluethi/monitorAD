@@ -84,7 +84,7 @@ def readAnalog():
         GPIO.output(23, False)
         value = bit * 2 ** (12 - x - 1)
         anip = anip + value
-        print x, bit, value, anip
+        #print x, bit, value, anip
     anip = anip * 3.3 / 4096
     return anip
 
