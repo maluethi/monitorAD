@@ -27,12 +27,6 @@ def initGPIO():
     GPIO.setup(19, GPIO.OUT)
     GPIO.setup(21, GPIO.IN)
 
-    GPIO.output(24, True)
-    GPIO.output(23, False)
-    GPIO.output(19, True)
-
-    GPIO.output(24, False)
-
 # clean up GPIO handling
 def endGPIO():
     GPIO.output(24, True)
@@ -67,6 +61,12 @@ def initPlotly():
 
 # read the analog values
 def readAnalog():
+
+    GPIO.output(24, True)
+    GPIO.output(23, False)
+    GPIO.output(19, True)
+
+    GPIO.output(24, False)
     anip = 0
     word1 = [1, 1, 1, 1, 1]
     for x in range(0, 5):
@@ -83,8 +83,9 @@ def readAnalog():
         time.sleep(0.01)
         GPIO.output(23, False)
         value = bit * 2 ** (12 - x - 1)
-        anip = (anip + value) * 3.3 / 4096
-
+        anip = anip + value
+        print x, bit, value, anip
+    anip = anip * 3.3 / 4096
     return anip
 
 
@@ -115,7 +116,8 @@ def main():
     except KeyboardInterrupt:
         print "stopping"
         target.close()
-        stream.close()
+        if int(streamit):
+            stream.close()
         endGPIO()
         sys.exit()
 
