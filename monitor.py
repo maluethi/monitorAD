@@ -49,7 +49,7 @@ def initPlotly():
                           'x': [], 'y': [], 'type': 'scatter',
                           'stream': {
                           'token': plotly_user_config['plotly_streaming_tokens'][0],
-                          'maxpoints': 5000
+                          'maxpoints': 10000
                           }
                           }], filename='hygro analog value', auto_open=False)
 
@@ -92,6 +92,9 @@ def readAnalog():
 def main():
     script, filename, streamit = sys.argv
 
+    # configuration
+    SampleInterval = 2 # in seconds
+
     # just protect yourself not to overwrite the data file
     if os.path.isfile(filename):
         print "file already exists"
@@ -111,7 +114,7 @@ def main():
             x = datetime.datetime.now()
             print x, volt
             target.write(str(x) + "; " + str(volt) + "\n")
-            time.sleep(1)
+            time.sleep(SampleInterval)
 
     except KeyboardInterrupt:
         print "stopping"
