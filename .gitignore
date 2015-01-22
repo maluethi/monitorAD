@@ -1,3 +1,4 @@
 # ignore configuration file for plot.ly
 *.json
 .idea/
+data/
